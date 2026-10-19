@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f2">
+  <meta name="description" content="A calm, mark-aware study planner that helps students choose what to work on next.">
+  <title>Deadline Rescue | Your next step, made clear</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to your plan</a>
+  <header class="topbar">
+    <a class="brand" href="#main" aria-label="Deadline Rescue home"><span class="brand-mark" aria-hidden="true">DR</span><span>deadline<span class="brand-accent">rescue</span></span></a>
+    <nav class="top-actions" aria-label="Main actions">
+      <button class="button button-quiet" id="buddy-open" type="button"><span aria-hidden="true">↗</span> Study Buddy</button>
+      <button class="avatar" type="button" aria-label="Student profile">S</button>
+    </nav>
+  </header>
+
+  <main id="main" class="page-shell">
+    <section class="welcome-row" aria-labelledby="page-title">
+      <div><p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> YOUR STUDY SPACE</p><h1 id="page-title">A clear next step.</h1><p class="welcome-copy">Big deadlines feel lighter when you know where to begin.</p></div>
+      <div class="today-card"><span class="today-icon" aria-hidden="true">◷</span><div><span class="small-label">TODAY'S STUDY BUDGET</span><strong><span id="budget-label">180</span> min</strong></div></div>
+    </section>
+
+    <section class="budget-panel panel" aria-labelledby="budget-title">
+      <div class="budget-copy"><div class="icon-tile" aria-hidden="true">◷</div><div><h2 id="budget-title">Your time, your call</h2><p>How much study time do you have today?</p></div></div>
+      <div class="budget-control"><label class="sr-only" for="budget-slider">Available study time in minutes</label><input id="budget-slider" type="range" min="0" max="480" step="15" value="180"><div class="range-labels"><span>0 min</span><span><output id="budget-output" for="budget-slider">3 hours</output> today</span><span>8 hours</span></div></div>
+      <button id="recalculate" class="button button-outline" type="button">↻ <span>Recalculate plan</span></button>
+    </section>
+
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+    <section class="dashboard-grid" aria-label="Your study plan">
+      <div class="main-column">
+        <section class="focus-card" aria-labelledby="next-title">
+          <div class="focus-top"><span class="focus-kicker"><span aria-hidden="true">✦</span> YOUR NEXT STEP</span><span class="match-badge" id="match-badge">BEST FIT</span></div>
+          <div id="recommendation" class="recommendation"></div>
+        </section>
+
+        <section class="panel tasks-panel" aria-labelledby="tasks-title">
+          <div class="section-heading"><div><p class="eyebrow">MAKE IT MANAGEABLE</p><h2 id="tasks-title">Your tasks <span class="count-pill" id="task-count">0</span></h2></div><button id="add-task-toggle" class="button button-outline" type="button"><span aria-hidden="true">＋</span> Add task</button></div>
+          <form id="task-form" class="inline-form" hidden>
+            <div class="form-grid"><div class="field"><label for="task-title">Task name</label><input id="task-title" name="title" required maxlength="90" placeholder="e.g. Draft the introduction"></div><div class="field"><label for="task-assessment">Assessment</label><select id="task-assessment" name="assessment" required></select></div><div class="field"><label for="task-minutes">Estimated minutes</label><input id="task-minutes" name="minutes" type="number" min="5" max="600" step="5" value="45" required></div><div class="field"><label for="task-contribution">Assessment contribution (%)</label><input id="task-contribution" name="contribution" type="number" min="1" max="100" value="25" required><small>Approximate share of this assessment's mark.</small></div></div>
+            <div class="form-actions"><button class="button button-primary" type="submit">Add to my plan</button><button class="button button-quiet" id="cancel-task" type="button">Cancel</button></div>
+          </form>
+          <div id="task-list" class="task-list"></div>
+        </section>
+      </div>
+
+      <aside class="side-column">
+        <section class="panel progress-panel" aria-labelledby="progress-title">
+          <div class="section-heading compact"><div><p class="eyebrow">SMALL STEPS ADD UP</p><h2 id="progress-title">Your progress</h2></div><span class="progress-ring" id="progress-ring" aria-label="0 percent complete"><span id="progress-percent">0%</span></span></div>
+          <div class="progress-track" role="progressbar" aria-label="Tasks completed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar"><span></span></div>
+          <p class="progress-caption" id="progress-caption">0 of 0 tasks completed</p>
+          <div class="assessment-summary"><h3>Assessments</h3><div id="assessment-list"></div><button id="add-assessment-toggle" class="text-button" type="button">＋ Add an assessment</button></div>
+        </section>
+
+        <section class="method-card" aria-labelledby="method-title"><div class="method-icon" aria-hidden="true">i</div><h2 id="method-title">How we choose</h2><p>Priority balances deadline urgency and the part of your grade this task supports, then adjusts for the time needed. Your day budget decides what fits.</p><button id="formula-details" class="text-button" type="button" aria-expanded="false" aria-controls="formula-note">See the simple rule <span aria-hidden="true">↓</span></button><div id="formula-note" class="formula-note" hidden><p><strong>Priority score</strong> = (assessment weight × task contribution × urgency factor) ÷ estimated hours.</p><p>Urgency rises as the due date gets closer. Overdue work is flagged. The highest-scoring unfinished task that fits your remaining time is suggested. You can always choose another.</p><p class="limitation">This is a planning aid. Estimates and mark contribution are approximate; the score cannot predict your actual result.</p></div></section>
+      </aside>
+    </section>
+
+    <section class="bottom-note" aria-label="Planning reminder"><span aria-hidden="true">☼</span><p>Plans can change. A small, steady step still counts.</p><button id="share-open" class="text-button" type="button">Share a study check-in <span aria-hidden="true">↗</span></button></section>
+  </main>
+
+  <dialog id="focus-dialog" class="modal" aria-labelledby="focus-heading"><div class="modal-head"><div><p class="eyebrow">FOCUS MODE</p><h2 id="focus-heading">One thing at a time.</h2></div><button class="icon-button" data-close="focus-dialog" aria-label="Close Focus Mode">×</button></div><div id="focus-content"></div></dialog>
+  <dialog id="assessment-dialog" class="modal" aria-labelledby="assessment-heading"><div class="modal-head"><div><p class="eyebrow">ASSESSMENT SETUP</p><h2 id="assessment-heading">Add an assessment</h2></div><button class="icon-button" data-close="assessment-dialog" aria-label="Close assessment form">×</button></div><form id="assessment-form" class="stack-form"><div class="field"><label for="assessment-name">Assessment name</label><input id="assessment-name" name="name" required maxlength="80" placeholder="e.g. Research report"></div><div class="field"><label for="assessment-module">Module or subject</label><input id="assessment-module" name="module" required maxlength="60" placeholder="e.g. Human Computer Interaction"></div><div class="form-grid two"><div class="field"><label for="assessment-weight">Module mark weighting (%)</label><input id="assessment-weight" name="weight" type="number" min="1" max="100" required placeholder="30"></div><div class="field"><label for="assessment-deadline">Due date</label><input id="assessment-deadline" name="deadline" type="date" required></div></div><div class="form-actions"><button class="button button-primary" type="submit">Save assessment</button><button class="button button-quiet" data-close="assessment-dialog" type="button">Cancel</button></div></form></dialog>
+  <dialog id="edit-dialog" class="modal" aria-labelledby="edit-heading"><div class="modal-head"><div><p class="eyebrow">TASK DETAILS</p><h2 id="edit-heading">Edit task</h2></div><button class="icon-button" data-close="edit-dialog" aria-label="Close task editor">×</button></div><form id="edit-task-form" class="stack-form"><div class="field"><label for="edit-title">Task name</label><input id="edit-title" name="title" required maxlength="90"></div><div class="field"><label for="edit-assessment">Assessment</label><select id="edit-assessment" name="assessment" required></select></div><div class="form-grid two"><div class="field"><label for="edit-minutes">Estimated minutes</label><input id="edit-minutes" name="minutes" type="number" min="5" max="600" step="5" required></div><div class="field"><label for="edit-contribution">Assessment contribution (%)</label><input id="edit-contribution" name="contribution" type="number" min="1" max="100" required><small>Approximate share of this assessment's mark.</small></div></div><div class="form-actions"><button class="button button-primary" type="submit">Save task</button><button class="button button-quiet" data-close="edit-dialog" type="button">Cancel</button></div></form></dialog>
+  <dialog id="share-dialog" class="modal" aria-labelledby="share-heading"><div class="modal-head"><div><p class="eyebrow">OPTIONAL STUDY BUDDY CHECK-IN</p><h2 id="share-heading">Share your plan, your way.</h2></div><button class="icon-button" data-close="share-dialog" aria-label="Close Study Buddy preview">×</button></div><p class="modal-intro">Choose what appears in a preview. Nothing is sent anywhere in this prototype.</p><div class="share-options"><label><input type="checkbox" id="share-task" checked> Current next task</label><label><input type="checkbox" id="share-time" checked> Planned study time</label><label><input type="checkbox" id="share-progress"> Progress summary</label></div><div class="share-preview"><span class="small-label">PREVIEW</span><p id="share-preview-text"></p></div><div class="form-actions"><button id="copy-share" class="button button-primary" type="button">Copy preview text</button><button class="button button-quiet" data-close="share-dialog" type="button">Done</button></div><p class="privacy-note">Simulated sharing only. No account, link or external message is created.</p></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <footer class="site-footer"><span>DEADLINE RESCUE</span><span>Thoughtful planning. Your call.</span></footer>
+</body>
+</html>
