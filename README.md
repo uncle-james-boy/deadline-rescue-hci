@@ -11,6 +11,8 @@ npm start
 
 Open http://localhost:4417. Stop the local server with Ctrl+C.
 
+The site is static. Each browser keeps its own plan in localStorage; Study Buddy is a preview and does not send information. The GitHub Pages workflow is in `.github/workflows/deploy-pages.yml`; a public URL is not confirmed until the workflow completes.
+
 ## Priority model
 
 Each open task receives a transparent relative score:
